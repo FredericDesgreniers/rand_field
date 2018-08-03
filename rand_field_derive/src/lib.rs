@@ -82,39 +82,34 @@ fn impl_rand_field(ast: &syn::DeriveInput) -> proc_macro2::TokenStream {
             }
         }
 
-        //panic!(format!("{:#?}", choices));
-
         let index = rand::thread_rng().gen_range(0, choices.len());
 
-        if let Some(convert) = convert {
+        let return_statement = {
+            if let Some(convert) = convert {
+                quote! {
+                    #name(#type_name::#convert(choice))
+                }
+            } else {
+                quote! {
+                    #name(choice)
+                }
+            }
+        };
+
             quote! {
             impl RandField for #name {
                 fn random() -> Self {
                     let choices = &[
                         #(#choices)*
                     ];
+                    use ::rand_field::rand::{thread_rng, Rng};
+                    let index = thread_rng().gen_range(0, choices.len());
+                    let choice = choices[index];
 
-                    let choice = choices[Self::rand_range(0, choices.len())];
-
-                    #name(#type_name::#convert(choice))
+                    #return_statement
                 }
             }
             }
-        } else {
-            quote!(
-            impl RandField for #name {
-                fn random() -> Self {
-                    let choices = &[
-                        #(#choices)*
-                    ];
-
-                    let choice = choices[Self::rand_range(0, choices.len())];
-
-                    #name(choice)
-                }
-            }
-            )
-        }
     } else {
         panic!("Could not find a good type for random derive")
     }

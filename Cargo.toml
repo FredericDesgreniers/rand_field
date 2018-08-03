@@ -7,4 +7,3 @@ authors = ["Frederic Desgreniers <fredericdesgreniers@gmail.com>"]
 [dependencies]
 rand_field_derive = {path="rand_field_derive"}
 rand_field = {path="rand_field"}
-rand = "*"
