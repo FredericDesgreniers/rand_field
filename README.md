@@ -10,6 +10,7 @@ use rand_field::RandField;
 
 #[derive(RandField)]
 #[choices("SomeChoice", "Another choice", "Something else")]
+#[convert("from")]
 struct RandomStringType(String);
 
 #[derive(RandField)]

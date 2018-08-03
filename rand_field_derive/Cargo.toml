@@ -7,7 +7,7 @@ proc-macro=true
 
 
 [dependencies]
-syn = "0.14"
+syn = {version="0.14", features=["extra-traits"]}
 quote = "*"
 proc-macro2 = "*"
 rand = "*"

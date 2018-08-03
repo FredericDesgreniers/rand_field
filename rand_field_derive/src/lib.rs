@@ -9,6 +9,7 @@ use proc_macro::TokenStream;
 use proc_macro2::TokenTree;
 use rand::Rng;
 use syn::{Data, Field, Fields, Type};
+use proc_macro2::Punct;
 
 #[proc_macro_derive(RandField, attributes(choices, convert))]
 pub fn rand_field(input: TokenStream) -> TokenStream {
@@ -16,7 +17,9 @@ pub fn rand_field(input: TokenStream) -> TokenStream {
 
     let output: proc_macro2::TokenStream = {
         let ast = syn::parse2(input).unwrap();
-        impl_rand_field(&ast)
+        let result = impl_rand_field(&ast);
+
+        result
     };
 
     output.into()
@@ -53,8 +56,10 @@ fn impl_rand_field(ast: &syn::DeriveInput) -> proc_macro2::TokenStream {
                     for token_tree in token_root {
                         if let TokenTree::Group(group) = token_tree {
                             for token_tree in group.stream() {
-                                if let TokenTree::Literal(lit) = token_tree {
-                                    choices.push(lit);
+                                match token_tree {
+                                    tt => {
+                                        choices.push(tt);
+                                    }
                                 }
                             }
                         }
@@ -77,6 +82,8 @@ fn impl_rand_field(ast: &syn::DeriveInput) -> proc_macro2::TokenStream {
             }
         }
 
+        //panic!(format!("{:#?}", choices));
+
         let index = rand::thread_rng().gen_range(0, choices.len());
 
         if let Some(convert) = convert {
@@ -84,7 +91,7 @@ fn impl_rand_field(ast: &syn::DeriveInput) -> proc_macro2::TokenStream {
             impl RandField for #name {
                 fn random() -> Self {
                     let choices = vec![
-                        #(#choices),*
+                        #(#choices)*
                     ];
 
                     let choice = choices[Self::rand_range(0, choices.len())];
@@ -98,12 +105,12 @@ fn impl_rand_field(ast: &syn::DeriveInput) -> proc_macro2::TokenStream {
             impl RandField for #name {
                 fn random() -> Self {
                     let choices = vec![
-                        #(#choices),*
+                        #(#choices)*
                     ];
 
                     let choice = choices[Self::rand_range(0, choices.len())];
 
-                    #name(#type_name::from(choice))
+                    #name(choice)
                 }
             }
             )
