@@ -13,6 +13,6 @@ use rand_field::RandField;
 struct Name(i32);
 
 fn main() {
-    let name = Name::random();
+    let name : Name = RandField::random();
     println!("Hello, world! {:?}", name);
 }
