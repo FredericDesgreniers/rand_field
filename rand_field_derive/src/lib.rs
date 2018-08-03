@@ -97,7 +97,19 @@ fn impl_rand_field(ast: &syn::DeriveInput) -> proc_macro2::TokenStream {
             }
         } else {
             quote!(
-                unimplemented();
+            impl RandField for #name {
+                type Output = Self;
+
+                fn random() -> Self::Output {
+                    let choices = vec![
+                        #(#choices),*
+                    ];
+
+                    let choice = choices[Self::rand_range(0, choices.len())];
+
+                    #name(#type_name::from(choice))
+                }
+            }
             )
         }
     } else {
