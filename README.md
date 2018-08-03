@@ -9,7 +9,7 @@ extern crate rand_field_derive;
 use rand_field::RandField;
 
 #[derive(RandField)]
-#[choices("SomeChoice", "Another choice", "Something elses")]
+#[choices("SomeChoice", "Another choice", "Something else")]
 struct RandomStringType(String);
 
 #[derive(RandField)]
