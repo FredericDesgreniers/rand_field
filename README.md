@@ -12,7 +12,7 @@ use rand_field::RandField;
 #[choices("SomeChoice", "Another choice", "Something elses")]
 struct RandomStringType(String);
 
-#[derive(RandFielc)]
+#[derive(RandField)]
 #[choices(1, 3, 423, 2, 12)]
 struct RandomIntType(i32);
 
