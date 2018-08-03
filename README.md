@@ -18,18 +18,14 @@ struct RandomStringType(String);
 struct RandomIntType(i32);
 
 struct SomeStruct {
-  ...
   some_string: RandomStringType,
   some_int: RandomIntType,
-  ...
 }
 
 fn main() {
   SomeStruct {
-    ...
-    some_type: RandField::random(),
+    some_string: RandField::random(),
     some_int: RandField::random(),
-    ...
   }
 }
 
