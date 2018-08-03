@@ -97,14 +97,7 @@ fn impl_rand_field(ast: &syn::DeriveInput) -> proc_macro2::TokenStream {
             }
         } else {
             quote!(
-                impl RandField for #name {
-                    type Output = Self;
-
-                    fn random() -> Self::Output {
-                        Self::Output::default()
-                    }
-                }
-
+                unimplemented();
             )
         }
     } else {
