@@ -17,15 +17,21 @@ struct RandomStringType(String);
 #[choices(1, 3, 423, 2, 12)]
 struct RandomIntType(i32);
 
+#[derive(RandField)]
+#[choices(Some(1), Some(2), None)]
+struct MaybeInt(Option<i32>)
+
 struct SomeStruct {
   some_string: RandomStringType,
   some_int: RandomIntType,
+  maybe_int: Option<i32>,
 }
 
 fn main() {
   SomeStruct {
     some_string: RandField::random(),
     some_int: RandField::random(),
+    maybe_int: RandField::random()
   }
 }
 
