@@ -113,8 +113,6 @@ fn impl_rand_field(ast: &syn::DeriveInput) -> proc_macro2::TokenStream {
             )
         }
     } else {
-        quote! {
-            unimplemented();
-        }
+        panic!("Could not find a good type for random derive")
     }
 }
