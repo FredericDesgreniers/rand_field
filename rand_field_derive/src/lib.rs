@@ -90,7 +90,7 @@ fn impl_rand_field(ast: &syn::DeriveInput) -> proc_macro2::TokenStream {
             quote! {
             impl RandField for #name {
                 fn random() -> Self {
-                    let choices = vec![
+                    let choices = &[
                         #(#choices)*
                     ];
 
@@ -104,7 +104,7 @@ fn impl_rand_field(ast: &syn::DeriveInput) -> proc_macro2::TokenStream {
             quote!(
             impl RandField for #name {
                 fn random() -> Self {
-                    let choices = vec![
+                    let choices = &[
                         #(#choices)*
                     ];
 
